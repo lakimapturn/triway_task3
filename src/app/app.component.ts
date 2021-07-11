@@ -9,6 +9,5 @@ import { UserDataService } from './user-data.service';
 export class AppComponent {
   title = 'task3';
   ngOnInit() {
-    //localStorage.setItem("tableData", JSON.stringify(UserDataService.infoTable))
   }
 }

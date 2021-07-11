@@ -22,8 +22,8 @@ export class UserFormComponent implements OnInit {
     this.user_form = this.formBuilder.group({
       fullname: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/) ]],
       username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
-      password: ['', Validators.required, Validators.minLength(2), Validators.minLength(4), Validators.maxLength(30)],
-      phone_number: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(15)]],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
+      phone_number: ['', [Validators.required]],
       send_email: [false],
       email: ['', [Validators.required, Validators.email]],
       address: [''],
@@ -117,6 +117,7 @@ export class UserFormComponent implements OnInit {
   edit(formValues)
   {
     this.edit_id = formValues.id;
+    console.log(formValues);
     this.user_form.setValue({
       fullname: formValues.fullname?formValues.fullname:'',
       username: formValues.username?formValues.username:'',
@@ -147,13 +148,13 @@ export class UserFormComponent implements OnInit {
     {
       this.userDService.addUserInfo(this.user_form.value);
       this.active_error = true;
-      //console.log(this.user_form);
       this.user_form.reset();
     }
     else if(this.edit_active && this.user_form.valid)
     {
       this.userDService.editUserInfo(this.user_form.value, this.edit_id);
       this.edit_active = false;
+      this.user_form.reset();
     }
   }
 }
