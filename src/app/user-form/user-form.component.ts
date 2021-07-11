@@ -14,6 +14,8 @@ export class UserFormComponent implements OnInit {
   app_id_error: string = '';
   valid_period_error: string = '';
   active_error: boolean = true;
+  edit_active: boolean = false;
+  edit_id: number = 0;
   enteredValues: Object = {};
   user_form: FormGroup;
   // @ViewChild('fullname') fullname;
@@ -48,7 +50,7 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userDService.formValues.subscribe(editFormValues => {this.stageEdit(editFormValues)});
+    //this.userDService.formValues.subscribe(editFormValues => {this.stageEdit(editFormValues)});
     this.userDService.formValues.subscribe(editFormValues => {this.edit(editFormValues)});
   }
 
@@ -143,7 +145,7 @@ export class UserFormComponent implements OnInit {
 
   edit(formValues)
   {
-    console.log(formValues)
+    this.edit_id = formValues.id;
     this.user_form.setValue({
       fullname: formValues.fullname?formValues.fullname:'',
       username: formValues.username?formValues.username:'',
@@ -159,6 +161,8 @@ export class UserFormComponent implements OnInit {
       postscript: formValues.postscript?formValues.postscript:'',
       authorization: formValues.background?formValues.background:false,
     });
+    if(formValues.fullname === '')
+      this.edit_active = true;
   }
 
   cancel()
@@ -168,12 +172,17 @@ export class UserFormComponent implements OnInit {
 
   submit()
   {
-    if(this.user_form.valid)
+    if(this.user_form.valid && this.edit_active === false)
     {
       this.userDService.addUserInfo(this.user_form.value);
       this.active_error = true;
-      console.log(this.user_form);
+      //console.log(this.user_form);
       this.user_form.reset();
+    }
+    else if(this.edit_active && this.user_form.valid)
+    {
+      this.userDService.editUserInfo(this.user_form.value, this.edit_id);
+      this.edit_active = false;
     }
   }
 }

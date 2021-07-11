@@ -15,14 +15,15 @@ export class UserInfoTableComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.userDService.userData.subscribe(tableValues => tableValues[0]?(this.tableValues.push(tableValues[tableValues.length-1])):this.tableValues);
+    this.userDService.userData.subscribe(tableValues => tableValues[0]?this.tableValues.splice(0, this.tableValues.length, ...tableValues):this.tableValues);
+    //this.userDService.userData.subscribe(tableValues => tableValues[0]?(this.tableValues.push(tableValues[tableValues.length-1])):this.tableValues);
   }
 
   edit(value)
   {
-    console.log(value)
+    value.id = this.tableValues.indexOf(value);
     this.userDService.stageEdit(value);
-    //localStorage.setItem('userInfo', JSON.stringify(this.tableValues)); // updating localStorage
+    localStorage.setItem('userInfo', JSON.stringify(this.tableValues)); // updating localStorage
   }
 
   delete(value)
@@ -32,7 +33,7 @@ export class UserInfoTableComponent implements OnInit {
     else if (this.tableValues.indexOf(value) == this.tableValues.length - 1)
      this.tableValues.pop()
     else
-    this.tableValues.splice(this.tableValues.indexOf(value), this.tableValues.indexOf(value));
-    //localStorage.setItem('userInfo', JSON.stringify(this.tableValues)); // updating localStorage
+    this.tableValues.splice(this.tableValues.indexOf(value), 1);
+    localStorage.setItem('userInfo', JSON.stringify(this.tableValues)); // updating localStorage
   }
 }

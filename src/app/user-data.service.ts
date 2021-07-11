@@ -35,6 +35,12 @@ export class UserDataService {
   {
     this.editFormValues.next(formValue);
   }
+
+  editUserInfo(info: UserInfo, id: number) {
+    this.arr.splice(id, 1, info);
+    this.userDataSource.next(this.arr);
+    localStorage.setItem("userInfo", JSON.stringify(this.arr))
+  }
 }
 
 export class UserInfo {
