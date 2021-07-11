@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { UserDataService } from '../user-data.service';
-import { UserInfoTableComponent } from '../user-info-table/user-info-table.component';
 
 @Component({
   selector: 'app-user-form',
@@ -18,29 +17,17 @@ export class UserFormComponent implements OnInit {
   edit_id: number = 0;
   enteredValues: Object = {};
   user_form: FormGroup;
-  // @ViewChild('fullname') fullname;
-  // @ViewChild('password') password;
-  // @ViewChild('username') username;
-  // @ViewChild('phone_number') phone_number;
-  // @ViewChild('email') email;
-  // @ViewChild('address') address;
-  // @ViewChild('contacts') contacts;
-  // @ViewChild('valid_period') valid_period;
-  // @ViewChild('app_id') app_id;
-  // @ViewChild('capacity') capacity;
-  // @ViewChild('postscript') postscript;
-
 
   constructor(private formBuilder: FormBuilder, private userDService: UserDataService) {
     this.user_form = this.formBuilder.group({
-      fullname: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      phone_number: ['', Validators.required],
+      fullname: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/) ]],
+      username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
+      password: ['', Validators.required, Validators.minLength(2), Validators.minLength(4), Validators.maxLength(30)],
+      phone_number: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(15)]],
       send_email: [false],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       address: [''],
-      contacts: [''],
+      contacts: ['', [Validators.minLength(7), Validators.maxLength(15)]],
       valid_period: ['', Validators.required],
       app_id: ['', Validators.required],
       capacity: ['', Validators.required],
@@ -50,7 +37,6 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.userDService.formValues.subscribe(editFormValues => {this.stageEdit(editFormValues)});
     this.userDService.formValues.subscribe(editFormValues => {this.edit(editFormValues)});
   }
 
@@ -82,7 +68,7 @@ export class UserFormComponent implements OnInit {
   }
 
   change(value: any) {
-    this.user_form
+    console.log(value);
   }
 
   onChange(value: any, login: any) {
@@ -126,21 +112,6 @@ export class UserFormComponent implements OnInit {
     else if (this.fullname_error != "" && this.app_id_error != "" && this.valid_period_error != "")
       this.active_error = true;
     else this.active_error = false;
-  }
-
-  stageEdit(formValue)
-  {
-    //console.log(this.fullname)
-    document.forms['user_form'].elements['username'].value = formValue.username;
-    document.forms['user_form'].elements['password'].value = formValue.password;
-    document.forms['user_form'].elements['phone_number'].value = formValue.phone_number;
-    document.forms['user_form'].elements['email'].value = formValue.email;
-    document.forms['user_form'].elements['address'].value = formValue.address ;
-    document.forms['user_form'].elements['contacts'].value = formValue.contacts ;
-    document.forms['user_form'].elements['valid_period'].value = formValue.valid_period ;
-    document.forms['user_form'].elements['app_id'].value = formValue.app_id ;
-    document.forms['user_form'].elements['capacity'].value = formValue.capacity ;
-    document.forms['user_form'].elements['postscript'].value = formValue.postscript ;
   }
 
   edit(formValues)

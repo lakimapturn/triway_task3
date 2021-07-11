@@ -7,7 +7,10 @@
                     <h4>Full Name</h4>
                 </div>
                 <div>
-                    <input formControlName = "fullname" required minlength="2" maxlength="30" id = "full_name" type = "text" class = "input_fields" (change) = "change('fullname')">
+                    <input formControlName = "fullname" id = "full_name" type = "text" class = "input_fields" (change) = "change(user_form.get('fullname'))">
+                    <div *ngIf = "user_form.get('fullname').invalid && user_form.get('fullname').touched">
+                        <p class = "asterisk_color">This is a required field! (Input cannot contain numbers)</p>
+                    </div>
                 </div>
             </div>
             <div class="input_field_divs">
@@ -16,7 +19,10 @@
                     <h4>Username</h4>
                 </div>
                 <div>
-                    <input formControlName = "username" required minlength="4" maxlength="30" id = "username" type = "text" class = "input_fields" (change) = "change('username')">
+                    <input formControlName = "username" id = "username" type = "text" class = "input_fields" (change) = "change('username')">
+                </div>
+                <div *ngIf = "user_form.get('username').invalid && user_form.get('username').touched">
+                    <p class = "asterisk_color">Input has to be longer than 4 characters!</p>
                 </div>
             </div>
             </div>
@@ -25,11 +31,14 @@
             <div style="display: inline-flex;">
             <div class="input_field_divs">
                 <div class="input_field_heading">
-                <h6 class="asterisk_color">*</h6>
-                <h4>Password</h4>
+                    <h6 class="asterisk_color">*</h6>
+                    <h4>Password</h4>
                 </div>
                 <div>
                     <input formControlName = "password" required minlength="6" maxlength="30" id = "password" type = "password" class = "input_fields">
+                </div>
+                <div *ngIf = "user_form.get('password').invalid && user_form.get('password').touched">
+                    <p class = "asterisk_color">This is a required field!</p>
                 </div>
             </div>
             <div class="input_field_divs">
@@ -38,7 +47,10 @@
                     <h4>Phone Number</h4>
                 </div>
                 <div>
-                    <input formControlName = "phone_number" required minlength="7" maxlength="15" id = "phone_number" type = "number" class = "input_fields">
+                    <input formControlName = "phone_number" id = "phone_number" type = "number" class = "input_fields">
+                </div>
+                <div *ngIf = "user_form.get('phone_number').invalid && user_form.get('phone_number').touched">
+                    <p class = "asterisk_color">This is a required field!</p>
                 </div>
             </div>
             </div>
@@ -49,20 +61,23 @@
                 <div class="input_field_heading">
                 <h4>Send Email</h4>
                 </div>
-                <div style="padding-right: 374px; margin-top: 7px">
+                <div style="padding-right: 363px; margin-top: 7px">
                 <label class="switch">
-                <input type="checkbox">
+                    <input type="checkbox" formControlName = "send_email">
                 <span class="slider round"></span>
                 </label>
                 </div>
             </div>
             <div class="input_field_divs">
                 <div class="input_field_heading">
-                <h6 class="asterisk_color">*</h6>
-                <h4>Email</h4>
+                    <h6 class="asterisk_color">*</h6>
+                    <h4>Email</h4>
                 </div>
                 <div>
-                <input formControlName = "email" required minlength = "7" maxlength = "32" id = "email" type = "email" class = "input_fields">
+                    <input formControlName = "email" id = "email" type = "email" class = "input_fields">
+                </div>
+                <div *ngIf = "user_form.get('email').invalid && user_form.get('email').touched">
+                    <p class = "asterisk_color">Enter a valid email address!</p>
                 </div>
             </div>
             </div>
@@ -78,11 +93,11 @@
                 </div>
             </div>
             <div class="input_field_divs">
-                <div class="input_field_heading">
-                <h4>Contacts</h4>
+                    <div class="input_field_heading">
+                    <h4>Contacts</h4>
                 </div>
                 <div>
-                <input formControlName = "contacts" id = "contacts" type = "number" class = "input_fields">
+                    <input formControlName = "contacts" id = "contacts" type = "number" class = "input_fields">
                 </div>
             </div>
             </div>
@@ -91,20 +106,26 @@
             <div style="display: inline-flex;">
             <div class="input_field_divs">
                 <div class="input_field_heading">
-                <h6 class="asterisk_color">*</h6>
-                <h4>Valid Period</h4>
+                    <h6 class="asterisk_color">*</h6>
+                    <h4>Valid Period</h4>
                 </div>
                 <div>
-                <input formControlName = "valid_period" required id = "valid_period" type = "date" class = "input_fields">
+                    <input formControlName = "valid_period"id = "valid_period" type = "date" class = "input_fields">
+                </div>
+                <div *ngIf = "user_form.get('valid_period').invalid && user_form.get('valid_period').touched">
+                    <p class = "asterisk_color">Entered period should be valid!</p>
                 </div>
             </div>
             <div class="input_field_divs">
                 <div class="input_field_heading">
-                <h6 class="asterisk_color">*</h6>
-                <h4>AppId</h4>
+                    <h6 class="asterisk_color">*</h6>
+                    <h4>AppId</h4>
                 </div>
                 <div>
-                <input formControlName = "app_id" required minlength="2" maxlength="30" id = "app_id" type = "text" class = "input_fields" (change) = "change('app_id')">
+                    <input formControlName = "app_id" required minlength="2" maxlength="30" id = "app_id" type = "text" class = "input_fields" (change) = "change('app_id')">
+                </div>
+                <div *ngIf = "user_form.get('app_id').invalid && user_form.get('app_id').touched">
+                    <p class = "asterisk_color">This is a required field!</p>
                 </div>
             </div>
             </div>
@@ -117,7 +138,10 @@
                 <h4>Capacity(M)</h4>
                 </div>
                 <div>
-                    <input formControlName = "capacity" required minlength="1" maxlength="4" id = "capacity" type = "number" class = "input_fields">
+                    <input formControlName = "capacity"  id = "capacity" type = "number" class = "input_fields">
+                </div>
+                <div *ngIf = "user_form.get('capacity').invalid && user_form.get('capacity').touched">
+                    <p class = "asterisk_color">This is a required field!</p>
                 </div>
             </div>
             <div class="input_field_divs">
@@ -133,7 +157,7 @@
     <div>
         <h5 style="height: 25px; margin: 15px 0px 7px 0px">Whether to authorize the background</h5>
         <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox" formControlName = "authorization">
             <span class="slider round"></span>
         </label>
         <div id="bottom">
