@@ -7,6 +7,12 @@ button {
   margin: 5px;
 }
 
+.form-class {
+  text-align: center;
+  background-color: #f0f0f0;
+  padding: 10px 0px 15px 10px;
+}
+
 .input_field_heading {
   display: inline-flex;
   height: 30px;

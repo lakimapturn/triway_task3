@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <title>Add User</title>
-  <style>
-    html {
-      font-family: "arial";
-    }
-  </style>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+  <head>
+    <title>Add User</title>
+    <style>
+      html {
+        font-family: "arial";
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  </head>
 
-<body>
-  <div style="text-align: center;">
-    <div class="heading">
-      <h1>Add User</h1>
-      <app-user-form></app-user-form>
+  <body>
+    <div style="text-align: center;">
+      <div class="heading">
+        <h1>Add User</h1>
+        <nav class = "navbar navbar-expand-lg navbar-light bg-light">
+          <button class = "btn btn-link" routerLink = "/user-form" routerLinkActive="active">User Form</button>
+          <button class = "btn btn-link" routerLink = "/user-form" routerLinkActive="active">User Info Table</button>
+        </nav>
+      </div>
     </div>
-  </div>
-  <div>
-    <hr>
-    <app-user-info-table></app-user-info-table>
-  </div>
-</body>
-
+    <router-outlet></router-outlet>
+  </body>
 </html>
