@@ -117,7 +117,6 @@ export class UserFormComponent implements OnInit {
   edit(formValues)
   {
     this.edit_id = formValues.id;
-    console.log(formValues);
     this.user_form.setValue({
       fullname: formValues.fullname?formValues.fullname:'',
       username: formValues.username?formValues.username:'',
