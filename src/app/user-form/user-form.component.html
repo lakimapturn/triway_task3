@@ -7,7 +7,7 @@
                     <h4>Full Name</h4>
                 </div>
                 <div>
-                    <input formControlName = "fullname" id = "full_name" type = "text" class = "input_fields" (change) = "change(user_form.get('fullname'))">
+                    <input formControlName = "fullname" id = "full_name" type = "text" class = "input_fields">
                     <div *ngIf = "user_form.get('fullname').invalid && user_form.get('fullname').touched">
                         <p class = "asterisk_color">This is a required field! (Input cannot contain numbers)</p>
                     </div>
@@ -19,7 +19,7 @@
                     <h4>Username</h4>
                 </div>
                 <div>
-                    <input formControlName = "username" id = "username" type = "text" class = "input_fields" (change) = "change('username')">
+                    <input formControlName = "username" id = "username" type = "text" class = "input_fields" >
                 </div>
                 <div *ngIf = "user_form.get('username').invalid && user_form.get('username').touched">
                     <p class = "asterisk_color">Input has to be longer than 4 characters!</p>
@@ -122,7 +122,7 @@
                     <h4>AppId</h4>
                 </div>
                 <div>
-                    <input formControlName = "app_id" required minlength="2" maxlength="30" id = "app_id" type = "text" class = "input_fields" (change) = "change('app_id')">
+                    <input formControlName = "app_id" required minlength="2" maxlength="30" id = "app_id" type = "text" class = "input_fields">
                 </div>
                 <div *ngIf = "user_form.get('app_id').invalid && user_form.get('app_id').touched">
                     <p class = "asterisk_color">This is a required field!</p>

@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserDataService } from '../user-data.service';
+import { UserDataService} from '../user-data.service';
 
 @Component({
   selector: 'app-user-form',
@@ -23,7 +23,7 @@ export class UserFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, 
     private userDService: UserDataService, 
     private route: ActivatedRoute, 
-    private Router: Router, 
+    private Router: Router,
     private http: HttpClient) {
     this.user_form = this.formBuilder.group({
       fullname: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/) ]],
@@ -43,8 +43,6 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    let response = this.http.get('http://localhost:8080/');
-    response.subscribe((data)=> {console.log(response)});
     if(parseInt(this.route.snapshot.paramMap.get('id')))
     {
       const id = parseInt(this.route.snapshot.paramMap.get('id'));
@@ -151,7 +149,7 @@ export class UserFormComponent implements OnInit {
     if(this.user_form.valid && !parseInt(this.route.snapshot.paramMap.get('id')))
     {
       this.userDService.addUserInfo(this.user_form.value);
-      this.active_error = true;
+      this.userDService.postUserInfo(this.user_form.value);
       this.user_form.reset();
       this.Router.navigate(['/user-info-table']);
     }

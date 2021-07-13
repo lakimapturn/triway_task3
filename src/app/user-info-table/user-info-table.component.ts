@@ -13,11 +13,13 @@ export class UserInfoTableComponent implements OnInit {
 
   constructor(private userDService: UserDataService, private router: Router) {
     this.tableValues = localStorage.getItem('userInfo')?JSON.parse(localStorage.getItem('userInfo')):[];
+    //this.userDService.formValues.subscribe(data=> console.log(data));
   }
 
   ngOnInit(){
     this.userDService.userData.subscribe(tableValues => tableValues[0]?this.tableValues.splice(0, this.tableValues.length, ...tableValues):this.tableValues);
     //this.userDService.userData.subscribe(tableValues => tableValues[0]?(this.tableValues.push(tableValues[tableValues.length-1])):this.tableValues);
+    //this.userDService.formValues.subscribe(data => data[0]?this.tableValues.splice(0, this.tableValues.length, ...data[0]): this.tableValues);
   }
 
   edit(value)
