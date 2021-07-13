@@ -6,6 +6,7 @@ import {Routes, RouterModule} from "@angular/router";
 
 const routes: Routes = [
     {path: 'user-form', component: UserFormComponent},
+    {path: 'user-form/:id', component: UserFormComponent},
     {path: 'user-info-table', component: UserInfoTableComponent}
 ]
 

@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserDataService } from '../user-data.service';
 
 @Component({
@@ -18,12 +20,16 @@ export class UserFormComponent implements OnInit {
   enteredValues: Object = {};
   user_form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private userDService: UserDataService) {
+  constructor(private formBuilder: FormBuilder, 
+    private userDService: UserDataService, 
+    private route: ActivatedRoute, 
+    private Router: Router, 
+    private http: HttpClient) {
     this.user_form = this.formBuilder.group({
       fullname: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/) ]],
       username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
-      phone_number: ['', [Validators.required]],
+      phone_number: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(7)]],
       send_email: [false],
       email: ['', [Validators.required, Validators.email]],
       address: [''],
@@ -33,11 +39,32 @@ export class UserFormComponent implements OnInit {
       capacity: ['', Validators.required],
       postscript: [''],
       authorization: [false],
-    })
+    });
   }
 
   ngOnInit() {
-    this.userDService.formValues.subscribe(editFormValues => {this.edit(editFormValues)});
+    let response = this.http.get('http://localhost:8080/');
+    response.subscribe((data)=> {console.log(response)});
+    if(parseInt(this.route.snapshot.paramMap.get('id')))
+    {
+      const id = parseInt(this.route.snapshot.paramMap.get('id'));
+      const formValues = JSON.parse(localStorage.getItem('userInfo'))[id];
+      this.user_form.setValue({
+        fullname: formValues.fullname?formValues.fullname:'',
+        username: formValues.username?formValues.username:'',
+        password: formValues.password?formValues.password:'',
+        phone_number: formValues.phone_number?formValues.phone_number:'',
+        send_email: formValues.send_email?formValues.send_email:false,
+        email: formValues.email?formValues.email:'',
+        address: formValues.address?formValues.address:'',
+        contacts: formValues.contacts?formValues.address:'',
+        valid_period: formValues.valid_period?formValues.valid_period: '',
+        app_id: formValues.app_id?formValues.app_id: '',
+        capacity: formValues.capacity?formValues.capacity: '',
+        postscript: formValues.postscript?formValues.postscript:'',
+        authorization: formValues.background?formValues.background:false,
+      });
+    }
   }
 
   resetForm(login: any)
@@ -114,28 +141,6 @@ export class UserFormComponent implements OnInit {
     else this.active_error = false;
   }
 
-  edit(formValues)
-  {
-    this.edit_id = formValues.id;
-    this.user_form.setValue({
-      fullname: formValues.fullname?formValues.fullname:'',
-      username: formValues.username?formValues.username:'',
-      password: formValues.password?formValues.password:'',
-      phone_number: formValues.phone_number?formValues.phone_number:'',
-      send_email: formValues.send_email?formValues.send_email:false,
-      email: formValues.email?formValues.email:'',
-      address: formValues.address?formValues.address:'',
-      contacts: formValues.contacts?formValues.address:'',
-      valid_period: formValues.valid_period?formValues.valid_period: '',
-      app_id: formValues.app_id?formValues.app_id: '',
-      capacity: formValues.capacity?formValues.capacity: '',
-      postscript: formValues.postscript?formValues.postscript:'',
-      authorization: formValues.background?formValues.background:false,
-    });
-    if(formValues.fullname === '')
-      this.edit_active = true;
-  }
-
   cancel()
   {
     this.user_form.reset();
@@ -143,17 +148,20 @@ export class UserFormComponent implements OnInit {
 
   submit()
   {
-    if(this.user_form.valid && this.edit_active === false)
+    if(this.user_form.valid && !parseInt(this.route.snapshot.paramMap.get('id')))
     {
       this.userDService.addUserInfo(this.user_form.value);
       this.active_error = true;
       this.user_form.reset();
+      this.Router.navigate(['/user-info-table']);
     }
-    else if(this.edit_active && this.user_form.valid)
+    else if(this.user_form.valid && parseInt(this.route.snapshot.paramMap.get('id')))
     {
+      console.log("editing...");
       this.userDService.editUserInfo(this.user_form.value, this.edit_id);
       this.edit_active = false;
       this.user_form.reset();
+      this.Router.navigate(['/user-info-table']);
     }
   }
 }

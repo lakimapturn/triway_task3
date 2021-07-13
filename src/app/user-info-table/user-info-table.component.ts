@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserDataService, UserInfo } from '../user-data.service';
 import { UserFormComponent } from '../user-form/user-form.component';
 
@@ -10,7 +11,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
 export class UserInfoTableComponent implements OnInit {
   tableValues: UserInfo[];
 
-  constructor(private userDService: UserDataService) {
+  constructor(private userDService: UserDataService, private router: Router) {
     this.tableValues = localStorage.getItem('userInfo')?JSON.parse(localStorage.getItem('userInfo')):[];
   }
 
@@ -22,8 +23,9 @@ export class UserInfoTableComponent implements OnInit {
   edit(value)
   {
     value.id = this.tableValues.indexOf(value);
-    this.userDService.stageEdit(value);
+    // this.userDService.stageEdit(value);
     localStorage.setItem('userInfo', JSON.stringify(this.tableValues)); // updating localStorage
+    this.router.navigate(['/user-form', value.id]);
   }
 
   delete(value)

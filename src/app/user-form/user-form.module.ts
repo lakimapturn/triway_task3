@@ -4,7 +4,6 @@ import { UserFormComponent } from './user-form.component';
 
 import { UserFormRoutingModule } from './user-form-routing.module';
 
-
 @NgModule({
   declarations: [UserFormComponent],
   imports: [

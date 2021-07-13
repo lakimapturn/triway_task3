@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserInfoTableComponent } from './user-info-table.component';
 
 const routes: Routes = [
-  {path: '', component: UserInfoTableComponent}
+  {path: '', component: UserInfoTableComponent},
+  {path: '/:id', component: UserInfoTableComponent}
 ];
 
 @NgModule({

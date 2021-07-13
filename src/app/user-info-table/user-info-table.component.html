@@ -33,10 +33,10 @@
         <td>{{value.valid_period}}</td>
         <td>{{value.app_id}}</td>
         <td>{{value.capacity}}</td>
-        <td>{{value.postscript}}</td>
+        <td>{{value.postscript===""?"-":value.postscript}}</td>
         <td>{{value.background?true:false}}</td>
         <td>
-          <button class = "btn btn-info" (click) = "edit(value)" routerLink = "/user-form">Edit</button>
+          <button class = "btn btn-info" (click) = "edit(value)">Edit</button>
         </td>
         <td>
           <button class = "btn btn-danger"(click) = "delete(value)">Delete</button>
