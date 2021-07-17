@@ -63,7 +63,7 @@
                 </div>
                 <div style="padding-right: 363px; margin-top: 7px">
                 <label class="switch">
-                    <input type="checkbox" formControlName = "send_email">
+                    <input type="checkbox" [checked] = "user_form.get('send_email')" formControlName = "send_email">
                 <span class="slider round"></span>
                 </label>
                 </div>
@@ -157,7 +157,7 @@
     <div>
         <h5 style="height: 25px; margin: 15px 0px 7px 0px">Whether to authorize the background</h5>
         <label class="switch">
-            <input type="checkbox" formControlName = "authorization">
+            <input type="checkbox" [checked] = "user_form.get('background')" formControlName = "authorization">
             <span class="slider round"></span>
         </label>
         <div id="bottom">

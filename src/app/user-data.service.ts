@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import {concatMap, switchMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,44 +12,42 @@ export class UserDataService {
   userData = this.userDataSource.asObservable();
   arr: Array<UserInfo> = [];
 
-  private databaseValues= new BehaviorSubject<Object>([]);
+  private databaseValues= new BehaviorSubject<any>([]);
   formValues = this.databaseValues.asObservable();
-  form: Array<UserInfo>=[];
+  form: any;
 
   constructor(private http: HttpClient) {
-    this.arr = localStorage.getItem('userInfo')? JSON.parse(localStorage.getItem('userInfo')): [];
-    this.formValues = this.http.get('http://localhost:8080/');
+    this.http.get('http://localhost:8080/').toPromise().then(val => {
+      this.form = val;
+      this.databaseValues.next(this.form);
+    });
+    
   }
 
-  getAllUserInfo() {
-    return this.userDataSource
+  getAllUserInfo() : any {
+    return this.http.get('http://localhost:8080/').toPromise().then(val => val);
   }
 
-  postUserInfo(info) {
-    this.http.post('http://localhost:8080/post', info, {
-        headers: new HttpHeaders({
-          'Content-type': 'application/json'
-        })
-      })
-      .toPromise()
-      .then(res => this.form.push(res as UserInfo));
-      console.log(this.form);
+  deleteUserInfo(info): any {
+    return(this.http.delete('http://localhost:8080/user-info/' + info.id).pipe(concatMap(async (data) => this.getAllUserInfo())));
   }
 
-  getUserInfo(id) {
-    return this.userDataSource[id];
+  getUserInfo(id) : any {
+    return Promise.resolve(this.http.get('http://localhost:8080/user-info/'+id).toPromise());
   }
 
   addUserInfo(info: UserInfo) {
-    this.arr.push(info)
-    this.userDataSource.next(this.arr);
-    localStorage.setItem("userInfo", JSON.stringify(this.arr))
+    this.http.post('http://localhost:8080/user-info', info).toPromise().then(formValues => {
+      this.form = formValues;
+      this.databaseValues.next(this.form);
+    })
   }
 
   editUserInfo(info: UserInfo, id: number) {
-    this.arr.splice(id, 1, info);
-    this.userDataSource.next(this.arr);
-    localStorage.setItem("userInfo", JSON.stringify(this.arr))
+    this.http.post('http://localhost:8080/user-info/'+id, info).toPromise().then(formValues => {
+      this.form = formValues;
+      this.databaseValues.next(this.form);
+    })
   }
 }
 

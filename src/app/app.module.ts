@@ -8,7 +8,7 @@ import { UserFormComponent } from './user-form/user-form.component';
 import { UserInfoTableComponent } from './user-info-table/user-info-table.component';
 import { AppRoutingModule } from './app.routing';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [

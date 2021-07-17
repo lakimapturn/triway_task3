@@ -46,22 +46,23 @@ export class UserFormComponent implements OnInit {
     if(parseInt(this.route.snapshot.paramMap.get('id')))
     {
       const id = parseInt(this.route.snapshot.paramMap.get('id'));
-      const formValues = JSON.parse(localStorage.getItem('userInfo'))[id];
-      this.user_form.setValue({
-        fullname: formValues.fullname?formValues.fullname:'',
-        username: formValues.username?formValues.username:'',
-        password: formValues.password?formValues.password:'',
-        phone_number: formValues.phone_number?formValues.phone_number:'',
-        send_email: formValues.send_email?formValues.send_email:false,
-        email: formValues.email?formValues.email:'',
-        address: formValues.address?formValues.address:'',
-        contacts: formValues.contacts?formValues.address:'',
-        valid_period: formValues.valid_period?formValues.valid_period: '',
-        app_id: formValues.app_id?formValues.app_id: '',
-        capacity: formValues.capacity?formValues.capacity: '',
-        postscript: formValues.postscript?formValues.postscript:'',
-        authorization: formValues.background?formValues.background:false,
-      });
+      this.userDService.getUserInfo(id).then(formValues => {
+        this.user_form.setValue({
+          fullname: formValues.fullname?formValues.fullname:'',
+          username: formValues.username?formValues.username:'',
+          password: formValues.password?formValues.password:'',
+          phone_number: formValues.phone_number?formValues.phone_number:'',
+          send_email: formValues.send_email?formValues.send_email:false,
+          email: formValues.email?formValues.email:'',
+          address: formValues.address?formValues.address:'',
+          contacts: formValues.contacts?formValues.contacts:'',
+          valid_period: formValues.valid_period?formValues.valid_period: '',
+          app_id: formValues.app_id?formValues.app_id: '',
+          capacity: formValues.capacity?formValues.capacity: '',
+          postscript: formValues.postscript?formValues.postscript:'',
+          authorization: formValues.background?formValues.background:false,
+        });
+      })
     }
   }
 
@@ -141,7 +142,10 @@ export class UserFormComponent implements OnInit {
 
   cancel()
   {
-    this.user_form.reset();
+    if(!parseInt(this.route.snapshot.paramMap.get('id')))
+      this.user_form.reset();
+    else
+      this.Router.navigate(['/user-form']);
   }
 
   submit()
@@ -149,15 +153,12 @@ export class UserFormComponent implements OnInit {
     if(this.user_form.valid && !parseInt(this.route.snapshot.paramMap.get('id')))
     {
       this.userDService.addUserInfo(this.user_form.value);
-      this.userDService.postUserInfo(this.user_form.value);
       this.user_form.reset();
       this.Router.navigate(['/user-info-table']);
     }
     else if(this.user_form.valid && parseInt(this.route.snapshot.paramMap.get('id')))
     {
-      console.log("editing...");
-      this.userDService.editUserInfo(this.user_form.value, this.edit_id);
-      this.edit_active = false;
+      this.userDService.editUserInfo(this.user_form.value, parseInt(this.route.snapshot.paramMap.get('id')));
       this.user_form.reset();
       this.Router.navigate(['/user-info-table']);
     }
